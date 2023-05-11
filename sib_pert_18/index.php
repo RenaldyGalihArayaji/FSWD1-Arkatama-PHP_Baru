@@ -1,15 +1,31 @@
 <?php
-include "function.php";
 
-$dataMagang = mysqli_query($con, "SELECT products.*, categories.name AS name_category FROM products JOIN categories ON products.category_id = categories.id ORDER BY id DESC");
+// koneksi
+include "koneksi.php";
 
+// Insert Data
 if (isset($_POST['submit'])) {
-    if (tambah($_POST) > 0) {
+
+    $namac = $_POST['name_c'];
+    $namap = $_POST['name_p'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $status = $_POST['status'];
+    $created_by = 1;
+
+
+    $queryc = mysqli_query($con, "INSERT INTO categories(name , created_at , updated_at) VALUES ('$namac',now(),now())");
+    $queryp = mysqli_query($con, "INSERT INTO products(name ,description ,price,status,created_at , updated_at, created_by) VALUES ('$namap','$description','$price','$status',now(),now(), '$created_by')");
+
+    if ($queryc && $queryp) {
         echo "Berhasil di tambah";
     } else {
         echo "gagal ditambahkan";
     }
 }
+
+// Menampilkan all data
+$dataMagang = mysqli_query($con, "SELECT products.*, categories.name AS name_category FROM products JOIN categories ON products.category_id = categories.id ");
 
 ?>
 
@@ -20,7 +36,7 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Data Magang</title>
+    <title>Latihan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
@@ -28,7 +44,7 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="container ">
-        <h2 class="text-center my-5">Data Magang</h2>
+        <h2 class="text-center my-5">Latihan</h2>
 
         <!-- Button Tambah -->
         <button class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Add<i class="bi bi-plus-lg ms-2"></i></button>
